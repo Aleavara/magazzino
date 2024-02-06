@@ -1,4 +1,4 @@
-package gestione.prodotti;
+package GestioneMagazzino;
 
 public class Prodotto {
 	
@@ -20,6 +20,18 @@ public class Prodotto {
 		this.quantita = quantita;
 		this.prezzo = prezzo;
 		this.disponibilita = disponibilita;
+	}
+	
+	@Override
+	public String toString() {
+	    return "Prodotto{" +
+	            "marca='" + marca + '\'' +
+	            ", modello='" + modello + '\'' +
+	            ", seriale=" + seriale +
+	            ", quantita=" + quantita +
+	            ", prezzo=" + prezzo +
+	            ", disponibilita=" + disponibilita +
+	            '}';
 	}
 	
 	
@@ -65,4 +77,6 @@ public class Prodotto {
 		else
 			throw new Exception("parametro errato");
 	}
+	
 }
+
