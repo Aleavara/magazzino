@@ -25,4 +25,11 @@ public class Magazzino {
             System.out.println(prodotto.toString());
         }
     }
-}
+    public Prodotto ricercaProdotto(String seriale){
+        for(prodotto: listaprodotti){
+            if(prodotto.getSeriale().equals(seriale))
+            return prodotto;}
+            return null;
+        }
+    }
+
