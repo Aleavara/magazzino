@@ -9,7 +9,8 @@ public class Prodotto {
 	private int quantita; //quanti può contenerli
 	private float prezzo;
 	private int disponibilita; //quanti ce ne sono ora
-	
+	private int etaMinimaUtilizzo;
+	private int mesiGaranzia;
 	
 	//COSTRUTTORE
 	public Prodotto(String marca, String modello, int seriale, int quantita, float prezzo, int disponibilita) {
@@ -37,6 +38,8 @@ public class Prodotto {
 	
 	
 	
+	
+	
 	//METODI GETTER E SETTER
 	public String getMarca() {
 		return marca;
@@ -60,13 +63,20 @@ public class Prodotto {
 		return quantita;
 	}
 	public void setQuantita(int quantita) {
+		if (quantita < 0) {
+            throw new ProdottoException("quantita inammissibile");
+        }
 		this.quantita = quantita;
 	}
 	public float getPrezzo() {
 		return prezzo;
 	}
-	public void setPrezzo(float prezzo) {
-		this.prezzo = prezzo;
+	  public void setPrezzo(float prezzo) throws ProdottoException {
+	        if (prezzo <= 0) {
+	            throw new ProdottoException("Il prezzo non può essere negativo o zero");
+	        }
+	        this.prezzo = prezzo;
+	    }
 	}
 	public int getDisponibilita() {
 		return disponibilita;
@@ -76,6 +86,24 @@ public class Prodotto {
 		this.disponibilita = disponibilita;
 		else
 			throw new Exception("parametro errato");
+	}
+	public void setEtaMinimaUtilizzo(int eta) {
+		if (eta <= 0) {
+            throw new ProdottoException("età inammissibile");
+        }     
+		this.etaMinimaUtilizzo=eta;
+	}
+	public void setMesiGaranzia(int mesi) {
+		if (mesi <= 0) {
+            throw new ProdottoException("valore errato");
+        }
+		this.mesiGaranzia=mesi;
+	}
+	public int getEtaminimaUtilizzo() {
+		return this.etaMinimaUtilizzo;
+	}
+	public int getMesiGaranzia() {
+		return this.mesiGaranzia;
 	}
 	
 }
