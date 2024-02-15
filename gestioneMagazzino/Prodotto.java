@@ -1,11 +1,11 @@
-package gestione.prodotti;
+package GestioneMagazzino;
 
 public class Prodotto {
 	
 	//ATTRIBUTI
 	private String marca;
 	private String modello;
-	private int seriale;
+	private Integer seriale;
 	private int quantita; //quanti può contenerli
 	private float prezzo;
 	private int disponibilita; //quanti ce ne sono ora
@@ -35,11 +35,6 @@ public class Prodotto {
 	            '}';
 	}
 	
-	
-	
-	
-	
-	
 	//METODI GETTER E SETTER
 	public String getMarca() {
 		return marca;
@@ -53,7 +48,7 @@ public class Prodotto {
 	public void setModello(String modello) {
 		this.modello = modello;
 	}
-	public int getSeriale() {
+	public Integer getSeriale() {
 		return seriale;
 	}
 	public void setSeriale(int seriale) {
@@ -62,9 +57,9 @@ public class Prodotto {
 	public int getQuantita() {
 		return quantita;
 	}
-	public void setQuantita(int quantita) {
+	public void setQuantita(int quantita) throws ProdottoException {
 		if (quantita < 0) {
-            throw new ProdottoException("quantita inammissibile");
+            throw new ProdottoException("quantità inammissibile");
         }
 		this.quantita = quantita;
 	}
@@ -77,7 +72,7 @@ public class Prodotto {
 	        }
 	        this.prezzo = prezzo;
 	    }
-	}
+	
 	public int getDisponibilita() {
 		return disponibilita;
 	}
@@ -87,13 +82,13 @@ public class Prodotto {
 		else
 			throw new Exception("parametro errato");
 	}
-	public void setEtaMinimaUtilizzo(int eta) {
+	public void setEtaMinimaUtilizzo(int eta) throws ProdottoException  {
 		if (eta <= 0) {
             throw new ProdottoException("età inammissibile");
         }     
 		this.etaMinimaUtilizzo=eta;
 	}
-	public void setMesiGaranzia(int mesi) {
+	public void setMesiGaranzia(int mesi) throws ProdottoException {
 		if (mesi <= 0) {
             throw new ProdottoException("valore errato");
         }

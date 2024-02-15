@@ -1,5 +1,6 @@
-package gestione.prodotti;
-public class ProdottoException extends Exception {
+package GestioneMagazzino;
+
+public class ProdottoException extends Throwable {
     public ProdottoException(String message) {
         super(message);
     }

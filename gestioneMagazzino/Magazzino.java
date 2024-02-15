@@ -1,4 +1,4 @@
-package gestione.prodotti;
+package GestioneMagazzino;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +25,27 @@ public class Magazzino {
             System.out.println(prodotto.toString());
         }
     }
+   
+    public boolean eliminaProdotto(Prodotto p) {
+    	
+    	for (Prodotto prodotto : listaProdotti) {
+    		if(p==prodotto) {
+    			
+    			listaProdotti.remove(prodotto);
+    			return true;
+    		}
+    	}
+    	
+    	return false;
+    }
+    
     public Prodotto ricercaProdotto(String seriale){
-        for(prodotto: listaprodotti){
+        for(Prodotto prodotto: listaProdotti){
             if(prodotto.getSeriale().equals(seriale))
             return prodotto;}
             return null;
         }
-    }
+    
+   
+}
 
