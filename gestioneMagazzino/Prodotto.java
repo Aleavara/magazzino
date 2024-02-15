@@ -1,4 +1,4 @@
-package GestioneMagazzino;
+package gestione.prodotti;
 
 public class Prodotto {
 	
