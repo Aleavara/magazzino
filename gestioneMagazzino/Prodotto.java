@@ -1,11 +1,18 @@
 package GestioneMagazzino;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Questa classe rappresenta un prodotto nel magazzino.
  * @author avara
  * @version 1.0
  */
-public class Prodotto {
+public class Prodotto implements Serializable,Comparable<Prodotto>{
     
     //ATTRIBUTI
     private String marca;
@@ -16,7 +23,9 @@ public class Prodotto {
     private int disponibilita; //quanti ce ne sono ora
     private int etaMinimaUtilizzo;
     private int mesiGaranzia;
-    
+    private String dataProduzione;
+    private String dataScadenza;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     /**
      * Costruttore della classe Prodotto.
      * @param marca La marca del prodotto.
@@ -37,6 +46,33 @@ public class Prodotto {
     }
     
     /**
+     * Costruttore della classe Prodotto.
+     * @param marca La marca del prodotto.
+     * @param modello Il modello del prodotto.
+     * @param seriale Il numero seriale del prodotto.
+     * @param quantita La quantità di prodotti.
+     * @param prezzo Il prezzo del prodotto.
+     * @param disponibilita La disponibilità attuale del prodotto.
+     * @param etaMinimaUtilizzo L'età minima di utilizzo del prodotto.
+     * @param mesiGaranzia I mesi di garanzia del prodotto.
+     * @param dataProduzione La data di produzione del prodotto.
+     * @param dataScadenza La data di scadenza del prodotto.
+     */
+    public Prodotto(String marca, String modello, int seriale, int quantita, float prezzo, int disponibilita,
+                    int etaMinimaUtilizzo, int mesiGaranzia, String dataProduzione, String dataScadenza) {
+        this.marca = marca;
+        this.modello = modello;
+        this.seriale = seriale;
+        this.quantita = quantita;
+        this.prezzo = prezzo;
+        this.disponibilita = disponibilita;
+        this.etaMinimaUtilizzo = etaMinimaUtilizzo;
+        this.mesiGaranzia = mesiGaranzia;
+        this.dataProduzione = dataProduzione;
+        this.dataScadenza = dataScadenza;
+    }
+    
+    /**
      * Metodo per ottenere una rappresentazione testuale del prodotto.
      * @return Una stringa che rappresenta il prodotto.
      */
@@ -51,6 +87,16 @@ public class Prodotto {
                 ", disponibilita=" + disponibilita +
                 '}';
     }
+    
+    public String toFileString() {
+        return marca + "," +
+               modello + "," +
+               seriale + "," +
+               quantita + "," +
+               prezzo + "," +
+               disponibilita;
+    }
+    
     
     //METODI GETTER E SETTER
     
@@ -155,11 +201,11 @@ public class Prodotto {
      * @param disponibilita La nuova disponibilità del prodotto.
      * @throws Exception Se la disponibilità è maggiore della quantità.
      */
-    public void setDisponibilita(int disponibilita) throws Exception {
+    public void setDisponibilita(int disponibilita) throws ProdottoException {
         if(disponibilita<quantita)
             this.disponibilita = disponibilita;
         else
-            throw new Exception("parametro errato");
+            throw new ProdottoException("parametro errato");
     }
     
     /**
@@ -200,4 +246,122 @@ public class Prodotto {
      */
     public int getMesiGaranzia() {
         return this.mesiGaranzia;
-    }}
+    }
+
+	public String getDataProduzione() {
+		return dataProduzione;
+	}
+
+	public void setDataProduzione(String dataProduzione) {
+		this.dataProduzione = dataProduzione;
+	}
+
+	public String getDataScadenza() {
+		return dataScadenza;
+	}
+
+	 public void setDataScadenza(String dataScadenza) {
+	        try {
+	            LocalDate.parse(dataScadenza, FORMATTER);
+	            this.dataScadenza = dataScadenza;
+	        } catch (Exception e) {
+	            throw new IllegalArgumentException("Formato data di scadenza non valido. ho bisogno del formato yyyy-MM-dd !!");
+	        }
+	    }
+	
+	public boolean isProdottoInScadenza() {
+	    // Confronta la data di scadenza con la data attuale
+	    LocalDate oggi = LocalDate.now();
+	    LocalDate dataScadenzaProdotto = LocalDate.parse(this.dataScadenza); // Assicurati che la dataScadenza sia nel formato corretto (es. "yyyy-MM-dd")
+	    
+	    // Se la data di scadenza è entro i prossimi 30 giorni dalla data attuale, ritorna true
+	    return oggi.plusDays(30).isAfter(dataScadenzaProdotto) && oggi.isBefore(dataScadenzaProdotto);
+	}
+	
+	public float calcolaValoreTotale() {
+	    return quantita * prezzo;
+	}
+	
+	public void aggiornaDisponibilita(int quantitaVenduta) throws ProdottoException {
+	    if (quantitaVenduta < 0) {
+	        throw new ProdottoException("Quantità venduta non valida");
+	    }
+	    if (quantitaVenduta > quantita) {
+	        throw new ProdottoException("Quantità venduta maggiore della disponibilità");
+	    }
+	    disponibilita -= quantitaVenduta;
+	}
+	
+	public boolean isGaranziaValida() {
+	    LocalDate oggi = LocalDate.now();
+	    LocalDate fineGaranzia = LocalDate.parse(dataProduzione, FORMATTER).plusMonths(mesiGaranzia);
+	    return oggi.isBefore(fineGaranzia);
+	}
+	
+	public void aggiornaPrezzo(float nuovoPrezzo) throws ProdottoException {
+	    if (nuovoPrezzo <= 0) {
+	        throw new ProdottoException("Il prezzo non può essere negativo o zero");
+	    }
+	    prezzo = nuovoPrezzo;
+	}
+	
+	public boolean isInEsaurimento(int soglia) {
+	    return disponibilita < soglia;
+	}
+	
+	public boolean isDisponibile() {
+	    return disponibilita > 0;
+	}
+	
+	public boolean isNuovo() {
+	    LocalDate oggi = LocalDate.now();
+	    LocalDate dataProduzioneProdotto = LocalDate.parse(dataProduzione, FORMATTER);
+	    return oggi.minusMonths(1).isBefore(dataProduzioneProdotto); // Consideriamo nuovo se la data di produzione è entro l'ultimo mese
+	}
+
+	@Override
+    
+    /**
+     * Metodo per confrontare due prodotti in base alla loro marca, modello e prezzo.
+     * 
+     * @param altroProdotto il prodotto da confrontare
+     * @return un valore negativo se questo prodotto è "prima" dell'altro, 
+     *         un valore positivo se è "dopo", 0 se sono considerati uguali
+     */
+    public int compareTo(Prodotto altroProdotto) {  //torna 1 se sono diversi, torna 0 se sono uguali
+        // Ordinamento per marca
+        int confrontoMarca = this.marca.compareTo(altroProdotto.marca);
+        if (confrontoMarca != 0) {
+            return confrontoMarca;
+        }
+        
+        // Se le marche sono uguali, confronto per modello
+        int confrontoModello = this.modello.compareTo(altroProdotto.modello);
+        if (confrontoModello != 0) {
+            return confrontoModello;
+        }
+        
+        // Se anche i modelli sono uguali, confronto per prezzo
+        return Float.compare(this.prezzo, altroProdotto.prezzo);
+    }
+	
+    // Attributi e metodi come nell'esempio precedente...
+
+    // Metodo per la scrittura degli oggetti
+    private void writeObject(ObjectOutputStream out) throws IOException {
+       out.defaultWriteObject(); // Serializza gli attributi standard
+        out.writeObject(dataProduzione); // Serializza la data di produzione
+        out.writeObject(dataScadenza); // Serializza la data di scadenza
+      
+    }
+
+    // Metodo per la lettura degli oggetti
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject(); // Deserializza gli attributi standard
+        dataProduzione = (String) in.readObject(); // Deserializza la data di produzione
+        dataScadenza = (String) in.readObject(); // Deserializza la data di scadenza
+    }
+
+	
+
+}
