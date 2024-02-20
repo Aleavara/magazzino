@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"GestioneMagazzino","l":"Magazzino"},{"p":"GestioneMagazzino","l":"Prodotto"},{"p":"GestioneMagazzino","l":"ProdottoException"}];updateSearchResults();
