@@ -72,8 +72,7 @@ public class Prodotto implements Serializable,Comparable<Prodotto>{
         this.dataScadenza = dataScadenza;
     }
     
-    public Prodotto() {	
-	}
+    public Prodotto() {}
 
 	/**
      * Metodo per ottenere una rappresentazione testuale del prodotto.
@@ -270,7 +269,12 @@ public class Prodotto implements Serializable,Comparable<Prodotto>{
 	 * @param dataProduzione data di produzione
 	 */
 	public void setDataProduzione(String dataProduzione) {
-		this.dataProduzione = dataProduzione;
+		  try {
+	            LocalDate.parse(dataProduzione, FORMATTER);
+	            this.dataProduzione=dataProduzione;
+	        } catch (Exception e) {
+	            throw new IllegalArgumentException("Formato data di scadenza non valido. ho bisogno del formato dd-MM-yyyy !!");
+	        }
 	}
 
 	/**
@@ -290,7 +294,7 @@ public class Prodotto implements Serializable,Comparable<Prodotto>{
 	            LocalDate.parse(dataScadenza, FORMATTER);
 	            this.dataScadenza = dataScadenza;
 	        } catch (Exception e) {
-	            throw new IllegalArgumentException("Formato data di scadenza non valido. ho bisogno del formato yyyy-MM-dd !!");
+	            throw new IllegalArgumentException("Formato data di scadenza non valido. ho bisogno del formato dd-MM-yyyy !!");
 	        }
 	    }
 	

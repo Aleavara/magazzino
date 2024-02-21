@@ -37,10 +37,21 @@ public class Magazzino {
     /**
      * Aggiunge un nuovo prodotto alla lista del magazzino.
      * @param nuovoProdotto Il prodotto da aggiungere al magazzino.
+     * @throws Exception 
      */
-    public void aggiungiProdotto(Prodotto nuovoProdotto) {
-        // Aggiunge un prodotto alla lista
+    public void aggiungiProdotto(Prodotto nuovoProdotto) throws Exception {
+        if(ricercaProdotto(nuovoProdotto.getSeriale())==null)
         listaProdotti.add(nuovoProdotto);
+        else {
+        	throw new Exception("prodotto con lo stesso seriale già esistente");
+        }
+    }
+    
+    /**
+     * metodo per rimuovere tutti i prodotti dal magazzino
+     */
+    public void rimuoviTuttiProdotti() {
+    	this.listaProdotti.clear();
     }
     
 
@@ -52,6 +63,13 @@ public class Magazzino {
         // Visualizza i dettagli di ogni prodotto nella lista
         for (Prodotto prodotto : listaProdotti) {
             System.out.println(prodotto.toString());
+        }
+    }
+    
+    public void visualizzaProdottiInScadenza() {
+    	for (Prodotto prodotto : listaProdotti) {
+            if(prodotto.isProdottoInScadenza())
+            	System.out.println("il prodotto " + prodotto.getMarca() + " modello " + prodotto.getModello() + " è in scadenza");
         }
     }
    
@@ -103,7 +121,7 @@ public class Magazzino {
      * @param marca La marca dei prodotti da filtrare.
      * @return Una lista di prodotti filtrati per la marca specificata.
      */
-    public List<Prodotto> filtraProdottiPerMarca(String marca) {
+    public List<Prodotto> filtraProdotti(String marca) {
         // Filtra i prodotti per la marca specificata
         List<Prodotto> prodottiFiltrati = new ArrayList<>();
         for (Prodotto prodotto : listaProdotti) {
@@ -114,6 +132,12 @@ public class Magazzino {
         return prodottiFiltrati;
     }
 
+    //fai filtri per altre cose.....
+    
+    
+    
+    
+    
     /**
      * Metodo per ottenere la lista di tutti i prodotti nel magazzino.
      * @return La lista di tutti i prodotti nel magazzino.

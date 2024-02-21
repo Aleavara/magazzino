@@ -26,7 +26,7 @@ public class TestMagazzino {
     }
 
     @Test
-    public void testAggiungiProdotto() {
+    public void testAggiungiProdotto() throws Exception {
         Prodotto prodotto3 = new Prodotto("Marca3", "Modello3", 9876, 8, 80.0f, 3);
         magazzino.aggiungiProdotto(prodotto3);
         assertEquals(3, magazzino.getListaProdotti().size());
