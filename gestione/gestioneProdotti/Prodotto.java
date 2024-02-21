@@ -14,7 +14,8 @@ import java.time.format.DateTimeFormatter;
  */
 public class Prodotto implements Serializable,Comparable<Prodotto>{
     
-    //ATTRIBUTI
+    private static final long serialVersionUID = 1L;
+	//ATTRIBUTI
     private String marca;
     private String modello;
     private Integer seriale;
