@@ -16,7 +16,7 @@ public class InterfacciaUtente {
 			magazzino.deserializzaMagazzino("prodotti.csv");
 
 		} catch (IOException | ClassNotFoundException e) {
-			System.out.println("Nessun prodotto trovato nel file.");
+			System.out.println("Nessun prodotto trovato nel file, il magazzino è vuoto");
 		}
 
 		Scanner scanner = new Scanner(System.in);
