@@ -1,4 +1,6 @@
 Java project for warehouse management that involves interaction between two main classes: 'Prodotto' product and "Magazzino" Warehouse 
+
+
 <img width="864" alt="Screenshot 2024-03-01 at 22 20 10" src="https://github.com/Aleavara/magazzino/assets/89666059/873c1519-28b5-48ad-861a-8e7b77ca63eb">
 
 
